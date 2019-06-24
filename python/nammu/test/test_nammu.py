@@ -108,6 +108,13 @@ def generic_loader(filename):
     return codecs.open(filename, encoding='utf-8').read()
 
 
+def time_sleep():
+    if 'TRAVIS' in os.environ:
+        time.sleep(6)
+    else:
+        time.sleep(2)
+
+
 class mockFile(object):
     '''
     A class used to monkeypatch the Java file object
@@ -143,7 +150,7 @@ class TestNammu(object):
     def test_syntax_highlight(self, text, caret, color, nammu):
         nammu.atfAreaController.edit_area.setText(text)
         # Wait here so the highlight completes before getting the styledoc
-        time.sleep(2)
+        time_sleep()
         doc = nammu.atfAreaController.edit_area.getStyledDocument()
 
         # Get the colour of a given character that should be highlighted
@@ -207,7 +214,6 @@ class TestNammu(object):
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
 
         nammu.openFile()
-        time.sleep(2)
         assert len(nammu.atfAreaController.edit_area.getText()) > 1
 
     def test_saving_split_pane(self, monkeypatch, tmpdir, arabic, nammu):
@@ -410,7 +416,7 @@ class TestNammu(object):
         edit_area.setText("Hello primary edit area!")
         arabic_area.setText("في شتة")
         nammu.atfAreaController.undo()
-        time.sleep(2)
+        time_sleep()
         assert (edit_area.getText() == "Hello primary edit area!" and
                 arabic_area.getText() == "")
 
@@ -426,7 +432,7 @@ class TestNammu(object):
         arabic_area.setText("في شتة")
         nammu.atfAreaController.undo()
         nammu.atfAreaController.redo()
-        time.sleep(2)
+        time_sleep()
         assert (edit_area.getText() == "Hello primary edit area!" and
                 arabic_area.getText() == "في شتة")
 
@@ -441,7 +447,7 @@ class TestNammu(object):
         arabic_area.setText("في شتة")
         edit_area.setText("Hello primary edit area!")
         nammu.atfAreaController.undo()
-        time.sleep(2)
+        time_sleep()
         assert (edit_area.getText() == "" and
                 arabic_area.getText() == "في شتة")
 
@@ -457,7 +463,7 @@ class TestNammu(object):
         edit_area.setText("Hello primary edit area!")
         nammu.atfAreaController.undo()
         nammu.atfAreaController.redo()
-        time.sleep(2)
+        time_sleep()
         assert (edit_area.getText() == "Hello primary edit area!" and
                 arabic_area.getText() == "في شتة")
 
