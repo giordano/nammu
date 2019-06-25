@@ -110,7 +110,7 @@ def generic_loader(filename):
 
 def time_sleep():
     if 'TRAVIS' in os.environ:
-        time.sleep(6)
+        time.sleep(10)
     else:
         time.sleep(2)
 
@@ -216,7 +216,9 @@ class TestNammu(object):
         monkeypatch.setattr(JFileChooser, 'getSelectedFile',
                             selected_file_patch_arabic)
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         edit_area = nammu.atfAreaController.edit_area
         atf_body = edit_area.getText()
         edit_area.setText(atf_body + '\n@obverse')
@@ -236,7 +238,9 @@ class TestNammu(object):
                             selected_file_patch_english)
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
 
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         assert len(nammu.atfAreaController.edit_area.getText()) > 1
 
     def test_saving_split_pane(self, monkeypatch, tmpdir, arabic, nammu):
@@ -246,7 +250,9 @@ class TestNammu(object):
                             selected_file_patch_arabic)
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
 
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         nammu.currentFilename = str(tmpdir.join('pytest.atf'))
 
         nammu.saveFile()
@@ -261,7 +267,9 @@ class TestNammu(object):
                             selected_file_patch_english)
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
 
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         nammu.currentFilename = str(tmpdir.join('pytest.atf'))
 
         nammu.saveFile()
@@ -277,7 +285,9 @@ class TestNammu(object):
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
 
         assert nammu.arabic_edition_on is False
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         assert nammu.arabic_edition_on is True
 
         assert isinstance(nammu.atfAreaController.view.container,
@@ -301,7 +311,9 @@ class TestNammu(object):
         monkeypatch.setattr(JFileChooser, 'getSelectedFile',
                             selected_file_patch_arabic)
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         nammu.closeFile()
         assert isinstance(view.container, JSplitPane)
         assert atfAreaController.arabic_area.getText() == ""
@@ -310,7 +322,9 @@ class TestNammu(object):
         assert toggleArabic.isEnabled()
         monkeypatch.setattr(JFileChooser, 'getSelectedFile',
                             selected_file_patch_english)
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         nammu.closeFile()
         assert isinstance(view.container, JScrollPane)
         assert toggleVertical.isEnabled()
@@ -365,7 +379,9 @@ class TestNammu(object):
         monkeypatch.setattr(JFileChooser, 'getSelectedFile',
                             selected_file_patch_english)
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         controller = nammu.atfAreaController
         controller.undo()
         assert ("edits: []" in controller.undo_manager.toString())
@@ -379,7 +395,9 @@ class TestNammu(object):
         monkeypatch.setattr(JFileChooser, 'getSelectedFile',
                             selected_file_patch_english)
         monkeypatch.setattr(nammu, 'handleUnsaved', unsaved_patch)
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         nammu.closeFile()
         controller = nammu.atfAreaController
         controller.undo()
@@ -599,7 +617,9 @@ class TestNammu(object):
                             show_diag_patch)
         monkeypatch.setattr(JFileChooser, 'getSelectedFile',
                             selected_file_patch_arabic)
+        time_sleep()
         nammu.openFile()
+        time_sleep()
         assert (nammu.view.getTitle() ==
                 "{} - Nammu".format(selected_file_patch_arabic(None)
                                     .getName()))
